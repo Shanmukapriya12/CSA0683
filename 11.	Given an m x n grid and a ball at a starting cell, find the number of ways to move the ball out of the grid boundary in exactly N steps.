@@ -1,0 +1,29 @@
+def findWays(m, n, N, startRow, startColumn):
+    # Directions for moving: up, down, left, right
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    
+    # Initialize DP table with all zeros
+    dp = [[0] * n for _ in range(m)]
+    dp[startRow][startColumn] = 1
+    
+    # Process each step
+    for _ in range(N):
+        new_dp = [[0] * n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if dp[i][j] > 0:
+                    for di, dj in directions:
+                        ni, nj = i + di, j + dj
+                        if 0 <= ni < m and 0 <= nj < n:
+                            new_dp[ni][nj] += dp[i][j]
+                        else:
+                            # Ball goes out of bounds
+                            new_dp[-1][-1] += dp[i][j]
+        dp = new_dp
+    
+    # Result: Number of ways to move out of bounds in exactly N steps
+    return dp[-1][-1]
+
+# Example usage
+m, n, N, startRow, startColumn = 2, 2, 2, 0, 0
+print("Number of ways to move the ball out of the grid:", findWays(m, n, N, startRow, startColumn))
