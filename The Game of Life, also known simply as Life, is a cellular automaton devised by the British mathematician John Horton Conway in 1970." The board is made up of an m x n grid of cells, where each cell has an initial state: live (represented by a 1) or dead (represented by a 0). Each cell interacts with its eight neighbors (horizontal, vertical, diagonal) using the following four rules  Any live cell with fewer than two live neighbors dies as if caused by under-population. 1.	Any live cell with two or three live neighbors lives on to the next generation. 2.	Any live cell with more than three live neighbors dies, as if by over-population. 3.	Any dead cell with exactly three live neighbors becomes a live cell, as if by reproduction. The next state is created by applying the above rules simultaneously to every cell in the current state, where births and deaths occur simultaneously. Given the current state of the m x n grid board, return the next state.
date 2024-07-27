@@ -1,0 +1,40 @@
+def gameOfLife(board):
+    if not board or not board[0]:
+        return
+    
+    m, n = len(board), len(board[0])
+    
+    # Directions for the 8 neighbors
+    directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    
+    # Helper function to count live neighbors
+    def countLiveNeighbors(row, col):
+        count = 0
+        for dr, dc in directions:
+            r, c = row + dr, col + dc
+            if 0 <= r < m and 0 <= c < n:
+                count += board[r][c] & 1  # Check the current state
+        return count
+    
+    # Apply rules and update the board
+    for i in range(m):
+        for j in range(n):
+            live_neighbors = countLiveNeighbors(i, j)
+            if board[i][j] & 1:  # Current state is live
+                if live_neighbors < 2 or live_neighbors > 3:
+                    board[i][j] = 1  # Set 01 (dead in the next state)
+                else:
+                    board[i][j] = 3  # Set 11 (live in the next state)
+            else:  # Current state is dead
+                if live_neighbors == 3:
+                    board[i][j] = 2  # Set 10 (live in the next state)
+    
+    # Decode the next state from the 1st bit
+    for i in range(m):
+        for j in range(n):
+            board[i][j] >>= 1  # Shift right to get the next state
+
+# Example usage
+board = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
+gameOfLife(board)
+print(board)  # Output: [[0,0,0],[1,0,1],[0,1,1],[0,1,0]]
