@@ -1,0 +1,25 @@
+def sort_list(input_list):
+    return sorted(input_list)
+
+# Test cases
+test_cases = {
+    "empty_list": [],
+    "one_element_list": [5],
+    "all_identical_elements": [7, 7, 7, 7, 7],
+    "negative_numbers": [-5, -1, -3, -2, -4]
+}
+
+expected_outputs = {
+    "empty_list": [],
+    "one_element_list": [5],
+    "all_identical_elements": [7, 7, 7, 7, 7],
+    "negative_numbers": [-5, -4, -3, -2, -1]
+}
+
+# Running the test cases
+for test, input_list in test_cases.items():
+    output = sort_list(input_list)
+    print(f"Input: {input_list}")
+    print(f"Expected Output: {expected_outputs[test]}")
+    print(f"Actual Output: {output}")
+    print(f"Test Passed: {output == expected_outputs[test]}\n")
