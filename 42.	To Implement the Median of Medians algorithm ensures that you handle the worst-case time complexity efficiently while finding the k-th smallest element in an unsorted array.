@@ -1,0 +1,45 @@
+def median_of_medians(arr):
+    """Find the median of medians."""
+    # Base case: if array length is 1 or 5, sort and return the median
+    if len(arr) <= 5:
+        return sorted(arr)[len(arr) // 2]
+    
+    # Split arr into groups of 5
+    medians = []
+    for i in range(0, len(arr), 5):
+        group = arr[i:i + 5]
+        medians.append(sorted(group)[len(group) // 2])
+    
+    # Recursively find the median of the medians
+    return median_of_medians(medians)
+
+def partition(arr, pivot):
+    """Partition the array around the pivot."""
+    less = [x for x in arr if x < pivot]
+    equal = [x for x in arr if x == pivot]
+    greater = [x for x in arr if x > pivot]
+    return less, equal, greater
+
+def kth_smallest(arr, k):
+    """Find the k-th smallest element in the array."""
+    if len(arr) == 1:
+        return arr[0]
+    
+    # Find the median of medians
+    pivot = median_of_medians(arr)
+    
+    # Partition the array around the pivot
+    less, equal, greater = partition(arr, pivot)
+    
+    if k < len(less):
+        return kth_smallest(less, k)
+    elif k < len(less) + len(equal):
+        return pivot
+    else:
+        return kth_smallest(greater, k - len(less) - len(equal))
+
+# Test Case
+arr = [7, 10, 4, 3, 20, 15]
+k = 3
+result = kth_smallest(arr, k)
+print(f"The {k}-th smallest element is {result}")
