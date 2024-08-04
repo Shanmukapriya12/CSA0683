@@ -1,0 +1,28 @@
+def binary_search(arr, target):
+    """Perform Binary Search to find the target in the array and count comparisons."""
+    low = 0
+    high = len(arr) - 1
+    comparisons = 0
+
+    while low <= high:
+        mid = (low + high) // 2
+        comparisons += 1
+        
+        # Check the middle element
+        if arr[mid] == target:
+            return mid, comparisons
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    
+    # Target is not in the array
+    return -1, comparisons
+
+# Test Case
+arr = [5, 10, 15, 20, 25, 30, 35, 40, 45]
+target = 20
+index, num_comparisons = binary_search(arr, target)
+
+print("Index of element", target, ":", index)
+print("Number of Comparisons:", num_comparisons)
