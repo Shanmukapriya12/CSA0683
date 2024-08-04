@@ -1,0 +1,38 @@
+def find_median(arr):
+    """Find the median of a sorted array."""
+    sorted_arr = sorted(arr)
+    return sorted_arr[len(sorted_arr) // 2]
+
+def partition(arr, pivot):
+    """Partition the array around the pivot."""
+    less = [x for x in arr if x < pivot]
+    equal = [x for x in arr if x == pivot]
+    greater = [x for x in arr if x > pivot]
+    return less, equal, greater
+
+def median_of_medians(arr, k):
+    """Find the k-th smallest element in the array."""
+    if len(arr) <= 5:
+        return sorted(arr)[k]
+
+    # Divide arr into groups of 5 and find the median of each group
+    medians = [find_median(arr[i:i + 5]) for i in range(0, len(arr), 5)]
+    
+    # Find the median of medians (pivot)
+    pivot = median_of_medians(medians, len(medians) // 2)
+    
+    # Partition the array around the pivot
+    less, equal, greater = partition(arr, pivot)
+    
+    if k < len(less):
+        return median_of_medians(less, k)
+    elif k < len(less) + len(equal):
+        return pivot
+    else:
+        return median_of_medians(greater, k - len(less) - len(equal))
+
+# Test Case
+arr = [7, 10, 4, 3, 20, 15]
+k = 3  # Find the 4th smallest element (0-based index)
+result = median_of_medians(arr, k)
+print(f"The {k+1}-th smallest element is {result}")
