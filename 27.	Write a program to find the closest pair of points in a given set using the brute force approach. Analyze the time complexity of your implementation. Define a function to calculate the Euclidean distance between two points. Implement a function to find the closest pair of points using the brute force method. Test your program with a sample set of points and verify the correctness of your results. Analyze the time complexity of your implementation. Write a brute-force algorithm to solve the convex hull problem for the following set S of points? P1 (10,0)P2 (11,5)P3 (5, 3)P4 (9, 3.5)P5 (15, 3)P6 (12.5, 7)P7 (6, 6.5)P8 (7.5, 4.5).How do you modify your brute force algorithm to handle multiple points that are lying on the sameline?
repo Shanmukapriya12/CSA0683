@@ -1,0 +1,56 @@
+import math
+
+def calculate_distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
+def closest_pair(points):
+    min_distance = float('inf')
+    closest_points = (None, None)
+    
+    for i in range(len(points)):
+        for j in range(i + 1, len(points)):
+            distance = calculate_distance(points[i], points[j])
+            if distance < min_distance:
+                min_distance = distance
+                closest_points = (points[i], points[j])
+                
+    return closest_points, min_distance
+
+def cross_product(o, a, b):
+    return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+def convex_hull(points):
+    points = sorted(points)  # Sort points lexicographically
+    if len(points) <= 1:
+        return points
+
+    # Build the lower hull
+    lower = []
+    for p in points:
+        while len(lower) >= 2 and cross_product(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+
+    # Build the upper hull
+    upper = []
+    for p in reversed(points):
+        while len(upper) >= 2 and cross_product(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+
+    # Remove the last point of each half because it's repeated at the beginning of the other half
+    return lower[:-1] + upper[:-1]
+
+# Example usage for closest pair
+points = [(1, 2), (4, 5), (7, 8), (3, 1)]
+closest_points, min_distance = closest_pair(points)
+print(f"Closest pair: {closest_points[0]} - {closest_points[1]}")
+print(f"Minimum distance: {min_distance}")
+
+# Example usage for convex hull
+points = [(10, 0), (11, 5), (5, 3), (9, 3.5), (15, 3), (12.5, 7), (6, 6.5), (7.5, 4.5)]
+hull = convex_hull(points)
+print("Convex Hull:", hull)
+
+# Expected convex hull output:
+# Convex Hull: [(5, 3), (10, 0), (15, 3), (12.5, 7), (6, 6.5)]
