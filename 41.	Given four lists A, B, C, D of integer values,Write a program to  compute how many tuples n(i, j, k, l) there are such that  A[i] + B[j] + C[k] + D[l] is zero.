@@ -1,0 +1,30 @@
+from collections import defaultdict
+
+def count_tuples(A, B, C, D):
+    """Count the number of tuples (i, j, k, l) such that A[i] + B[j] + C[k] + D[l] == 0."""
+    # Dictionary to store sum counts of pairs from A and B
+    sum_count = defaultdict(int)
+    
+    # Compute all possible sums of pairs from A and B
+    for a in A:
+        for b in B:
+            sum_count[a + b] += 1
+    
+    count = 0
+    
+    # Compute sums for pairs from C and D and check against the sum_count dictionary
+    for c in C:
+        for d in D:
+            target = -(c + d)
+            if target in sum_count:
+                count += sum_count[target]
+    
+    return count
+
+# Test Case
+A = [1, 2]
+B = [-2, -1]
+C = [-1, 2]
+D = [0, 2]
+result = count_tuples(A, B, C, D)
+print("Number of tuples:", result)
