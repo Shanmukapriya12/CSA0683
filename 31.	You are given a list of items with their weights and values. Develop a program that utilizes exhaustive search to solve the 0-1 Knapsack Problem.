@@ -1,0 +1,36 @@
+from itertools import combinations
+
+def total_value(selected_items, values):
+    """Calculate the total value of the selected items."""
+    return sum(values[i] for i in selected_items)
+
+def is_feasible(selected_items, weights, capacity):
+    """Check if the selected items fit within the knapsack's capacity."""
+    total_weight = sum(weights[i] for i in selected_items)
+    return total_weight <= capacity
+
+def knapsack_problem(weights, values, capacity):
+    """Solve the 0-1 Knapsack Problem using exhaustive search."""
+    n = len(weights)
+    max_value = 0
+    best_selection = []
+
+    # Generate all possible subsets of items
+    for r in range(n + 1):
+        for subset in combinations(range(n), r):
+            if is_feasible(subset, weights, capacity):
+                current_value = total_value(subset, values)
+                if current_value > max_value:
+                    max_value = current_value
+                    best_selection = subset
+
+    return best_selection, max_value
+
+# Test Case 1: Simple Case
+weights1 = [2, 3, 1]
+values1 = [4, 5, 3]
+capacity1 = 4
+selection1, value1 = knapsack_problem(weights1, values1, capacity1)
+print("Test Case 1:")
+print(f"Optimal Selection: {list(selection1)}")
+print(f"Total Value: {value1}")
