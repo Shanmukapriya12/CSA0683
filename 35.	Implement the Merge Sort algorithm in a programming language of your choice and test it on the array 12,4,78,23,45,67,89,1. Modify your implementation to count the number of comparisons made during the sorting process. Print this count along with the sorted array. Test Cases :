@@ -1,0 +1,51 @@
+# Global variable to count comparisons
+comparison_count = 0
+
+def merge(left, right):
+    """Merge two sorted arrays into a single sorted array while counting comparisons."""
+    global comparison_count
+    result = []
+    i = j = 0
+
+    # Merge while there are elements in both arrays
+    while i < len(left) and j < len(right):
+        comparison_count += 1
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    # Add remaining elements from left array
+    while i < len(left):
+        result.append(left[i])
+        i += 1
+
+    # Add remaining elements from right array
+    while j < len(right):
+        result.append(right[j])
+        j += 1
+
+    return result
+
+def merge_sort(arr):
+    """Sort an array using the Merge Sort algorithm and count comparisons."""
+    if len(arr) <= 1:
+        return arr
+
+    # Divide
+    mid = len(arr) // 2
+    left_half = merge_sort(arr[:mid])
+    right_half = merge_sort(arr[mid:])
+
+    # Combine
+    return merge(left_half, right_half)
+
+# Test Case
+arr = [12, 4, 78, 23, 45, 67, 89, 1]
+sorted_arr = merge_sort(arr)
+
+# Output the sorted array and the number of comparisons
+print("Sorted Array:", sorted_arr)
+print("Number of Comparisons:", comparison_count)
