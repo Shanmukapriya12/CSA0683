@@ -1,0 +1,11 @@
+def str_str(haystack, needle):
+    return haystack.find(needle)
+
+# Example usage
+haystack = "hello"
+needle = "ll"
+print(str_str(haystack, needle))  # Output: 2
+
+haystack = "aaaaa"
+needle = "bba"
+print(str_str(haystack, needle))  # Output: -1
