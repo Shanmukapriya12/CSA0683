@@ -1,0 +1,43 @@
+import itertools
+
+def total_cost(assignment, cost_matrix):
+    """Calculate the total cost of an assignment."""
+    total = 0
+    n = len(assignment)  # Number of workers/tasks
+    for worker, task in enumerate(assignment):
+        total += cost_matrix[worker][task]
+    return total
+
+def assignment_problem(cost_matrix):
+    """Solve the assignment problem using exhaustive search."""
+    n = len(cost_matrix)
+    if n == 0:
+        return 0, []
+
+    min_cost = float('inf')
+    best_assignment = []
+
+    # Generate all possible permutations of task indices
+    for perm in itertools.permutations(range(n)):
+        current_cost = total_cost(perm, cost_matrix)
+        if current_cost < min_cost:
+            min_cost = current_cost
+            best_assignment = perm
+
+    return min_cost, best_assignment
+
+# Test Case 1: Simple Case
+cost_matrix1 = [
+    [3, 10, 7],
+    [8, 5, 12],
+    [4, 6, 9]
+]
+
+min_cost1, best_assignment1 = assignment_problem(cost_matrix1)
+print("Test Case 1:")
+print(f"Minimum Cost: {min_cost1}")
+print(f"Best Assignment: {best_assignment1}")
+
+# To format the assignment more clearly (e.g., (worker, task) pairs)
+formatted_assignment1 = [(worker, task) for worker, task in enumerate(best_assignment1)]
+print("Formatted Assignment:", formatted_assignment1)
