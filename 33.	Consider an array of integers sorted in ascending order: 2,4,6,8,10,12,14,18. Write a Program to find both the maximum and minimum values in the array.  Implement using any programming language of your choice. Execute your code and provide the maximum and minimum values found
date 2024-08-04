@@ -1,0 +1,18 @@
+def find_min_max_sorted(arr):
+    """Find the minimum and maximum values in a sorted array."""
+    if not arr:
+        raise ValueError("The array is empty.")
+    
+    min_val = arr[0]
+    max_val = arr[-1]
+    
+    return min_val, max_val
+
+# Input array (sorted)
+arr = [2, 4, 6, 8, 10, 12, 14, 18]
+
+# Find min and max values
+min_value, max_value = find_min_max_sorted(arr)
+
+# Output the results
+print(f"Min = {min_value}, Max = {max_value}")
