@@ -1,0 +1,47 @@
+def orientation(p, q, r):
+    """Calculate the orientation of the triplet (p, q, r).
+    Returns:
+        0 if collinear,
+        1 if clockwise,
+        2 if counterclockwise
+    """
+    val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+    if val == 0:
+        return 0
+    elif val > 0:
+        return 1
+    else:
+        return 2
+
+def is_point_on_boundary(points, p):
+    """Check if point p is on the boundary of the convex hull defined by points."""
+    n = len(points)
+    for i in range(n):
+        for j in range(i + 1, n):
+            # Check if point p is on the line segment between points[i] and points[j]
+            if orientation(points[i], points[j], p) == 0:
+                if min(points[i][0], points[j][0]) <= p[0] <= max(points[i][0], points[j][0]) and \
+                   min(points[i][1], points[j][1]) <= p[1] <= max(points[i][1], points[j][1]):
+                    return True
+    return False
+
+def convex_hull_brute_force(points):
+    """Find the convex hull of a set of 2D points using brute force."""
+    n = len(points)
+    if n < 3:
+        return points
+
+    hull = []
+    for i in range(n):
+        if is_point_on_boundary(points, points[i]):
+            if points[i] not in hull:
+                hull.append(points[i])
+    
+    return hull
+
+# Example usage
+points = [(10, 0), (11, 5), (5, 3), (9, 3.5), (15, 3), (12.5, 7), (6, 6.5), (7.5, 4.5)]
+hull = convex_hull_brute_force(points)
+print("Convex Hull:", hull)
+
+# Expected output may vary in order, but should include the boundary points
