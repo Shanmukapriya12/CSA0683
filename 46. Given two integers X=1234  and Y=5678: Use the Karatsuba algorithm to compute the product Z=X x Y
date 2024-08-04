@@ -1,0 +1,31 @@
+def karatsuba(x, y):
+    """Multiply two integers using the Karatsuba algorithm."""
+    # Convert to strings to easily split the number
+    x_str = str(x)
+    y_str = str(y)
+    
+    # Base case for recursion
+    if len(x_str) == 1 or len(y_str) == 1:
+        return x * y
+
+    # Compute the size of the numbers
+    m = min(len(x_str), len(y_str))
+    m2 = m // 2
+    
+    # Split the numbers into halves
+    high1, low1 = int(x_str[:-m2] or '0'), int(x_str[-m2:] or '0')
+    high2, low2 = int(y_str[:-m2] or '0'), int(y_str[-m2:] or '0')
+    
+    # Recursive steps
+    z0 = karatsuba(low1, low2)           # z0 = low1 * low2
+    z1 = karatsuba((low1 + high1), (low2 + high2))  # z1 = (low1 + high1) * (low2 + high2)
+    z2 = karatsuba(high1, high2)         # z2 = high1 * high2
+
+    # Combine the results
+    return z2 * 10**(2*m2) + (z1 - z2 - z0) * 10**(m2) + z0
+
+# Test Case
+x = 1234
+y = 5678
+result = karatsuba(x, y)
+print(f"{x} × {y} = {result}")
